@@ -1,0 +1,66 @@
+FROM nvidia/cuda:12.2.2-devel-ubuntu22.04
+    
+ARG DEBIAN_FRONTEND=noninteractive
+USER root
+
+# system update
+RUN apt update
+RUN apt upgrade -y
+####
+####
+RUN apt-get autoclean
+RUN apt-get autoremove
+####
+
+RUN apt install -y mc zip gcc git build-essential
+
+#### Install miniconda ####
+ENV PATH="/root/miniconda3/bin:${PATH}"
+ARG PATH="/root/miniconda3/bin:${PATH}"
+RUN apt-get update
+
+RUN apt-get install -y wget && rm -rf /var/lib/apt/lists/*
+
+RUN wget \
+ https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+ && mkdir /root/.conda \
+ && bash Miniconda3-latest-Linux-x86_64.sh -b \
+ && rm -f Miniconda3-latest-Linux-x86_64.sh 
+RUN conda --version
+#### Install miniconda ####
+
+RUN conda install python=3.9 -y
+RUN conda install -c main -y jupyter
+
+RUN pip install --extra-index-url=https://pypi.nvidia.com cudf-cu12 
+RUN pip install --extra-index-url=https://pypi.nvidia.com cuml-cu12
+
+RUN pip install -U setuptools
+RUN pip install -U pip 
+RUN pip install -U cupy-cuda12x
+RUN pip install -U Cython
+RUN pip install -U scikit-learn
+RUN pip install -U numba
+RUN pip install -U numpy==1.26.0
+RUN pip install -U pandas==2.1.3
+RUN pip install -U seaborn
+RUN pip install -U matplotlib
+RUN pip install -U polars>=0.18.13
+RUN pip install -U scipy>=1.8.0
+RUN pip install -U rank_bm25
+RUN pip install -U transliterate
+RUN pip install -U pymorphy2
+RUN pip install -U pyaspeller
+RUN pip install -U fastparquet
+RUN pip install -U catboost
+RUN pip install -U pyspark
+
+RUN pip install install nbclassic
+
+
+RUN pip install -U nltk
+RUN [ "python", "-c", "import nltk; nltk.download('stopwords')" ]
+RUN [ "python", "-c", "import nltk; nltk.download('words')" ]
+RUN [ "python", "-c", "import nltk; nltk.download('punkt')" ]
+
+RUN useradd -ms /bin/bash  jovyan
