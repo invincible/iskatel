@@ -26,3 +26,6 @@
 [./rutube_tfidf_comments.ipynb](https://github.com/invincible/iskatel/blob/main/rutube_gpu_tfidf_bm25_CATBOOSTRANKER.ipynb) Код основного решения;
 
 [./bm25_catboost.csv](https://github.com/invincible/iskatel/blob/main/bm25_catboost.csv) Файл с рекомендациями;
+
+Репозиторий вебинтерфейса:
+https://github.com/invincible/search_autocomplete
